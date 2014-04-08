@@ -8,7 +8,7 @@ PeakSeq Systematic Scoring of ChIP-Seq Experiments Relative to Controls
 Rozowsky J, Euskirchen G, Auerbach R, Zhang Z, Gibson T, Bjornson R, Carriero N, Snyder M, Gerstein M
 Nature Biotechnology 27, 66 - 75 (2009).
 
-This new version is re-coded by Arif Harmanci under supervision of Joel Rozowsky.
+This new version is re-coded by Arif Harmanci under supervision of Joel Rozowsky. For more info see http://info.gersteinlab.org/PeakSeq
 
 Installation 
 =============
@@ -29,43 +29,43 @@ where the input file name is specified as stdin to indicate that the mapped read
 After preprocessing, the peaks can be called using -peak_select option. PeakSeq requires a configuration file for calling the peaks where several parameters are specified in each line in the '[id] [value]' format. An example configuration file is as follows
 
 config.dat
-# Experiment id is used as a prefix to the output file name.
+Experiment id is used as a prefix to the output file name.
 Experiment_id pol2_peaks
 
-# Chromosome ID list file, is used to generate data file paths.
+Chromosome ID list file, is used to generate data file paths.
 chromosome_list_file chr_id_list.txt
 
-# Enrichment fragment length For tag extension, this is the value of average fragment length.
+Enrichment fragment length For tag extension, this is the value of average fragment length.
 Enrichment_fragment_length 200
 
-# Target FDR in the simulations.
+Target FDR in the simulations.
 target_FDR 0.05
 
-# Number of simulations performed while estimating the putative peaks.
+Number of simulations performed while estimating the putative peaks.
 N_Simulations 10
 
-# Minimum distance between consecutive peaks
+Minimum distance between consecutive peaks
 Minimum_interpeak_distance 200
 
-# Mappability file that includes the uniquely mappable number of nucleotides per window for each chromosome.
+Mappability file that includes the uniquely mappable number of nucleotides per window for each chromosome.
 Mappability_map_file Mapability_HG.txt
 
-# The directory that contains the preprocessed ChIP-Seq reads, can specify multiple directories to pool reads from multiple source (e.g. replicates)
+The directory that contains the preprocessed ChIP-Seq reads, can specify multiple directories to pool reads from multiple source (e.g. replicates)
 ChIP_Seq_reads_data_dirs Pol2_ChIP
 
-# The directory that contains the preprocessed Input (control) experiment reads. (Multiple directories allowed)
+The directory that contains the preprocessed Input (control) experiment reads. (Multiple directories allowed)
 Input_reads_data_dirs Pol2_Input
 
-# Seed for pseudo-random number generator. This is necessary for simulated background option (specified below).
-#Simulation_seed 1234567
+Seed for pseudo-random number generator. This is necessary for simulated background option (specified below).
+Simulation_seed 1234567
 
-# Q-value threshold applied on the final set of peaks.
+Q-value threshold applied on the final set of peaks.
 max_Qvalue 0.05
 
-# There are currently two models for simulating the background for threshold selection
-# Simulated background is the simulation based method that is explained in the PeakSeq paper.
-# Poisson background uses a simple Poisson background with mean estimated from the read statistics. This option is still experimental but it is much faster than the simulated background option.
-# Background_model Poisson
+There are currently two models for simulating the background for threshold selection
+Simulated background is the simulation based method that is explained in the PeakSeq paper.
+Poisson background uses a simple Poisson background with mean estimated from the read statistics. This option is still experimental but it is much faster than the simulated background option.
+Background_model Poisson
 Background_model Simulated
 
 
@@ -82,7 +82,5 @@ FeedbackCommentsQuestions
 ============================
 Are always welcome. Please address them to Arif Harmanci (arif.harmanci@yale.edu). 
 
-=========================================================================
 Arif Harmanci, Joel Rozowsky. Gerstein Lab, Yale University. June, 2011.
-=========================================================================
 
