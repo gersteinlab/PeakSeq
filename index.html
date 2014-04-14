@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Peakseq : Identifying and ranking peak regions in ChIP-Seq experiments" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Peakseq</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/gersteinlab/PeakSeq">View on GitHub</a>
+
+          <h1 id="project_title">Peakseq</h1>
+          <h2 id="project_tagline">Identifying and ranking peak regions in ChIP-Seq experiments</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/gersteinlab/PeakSeq/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/gersteinlab/PeakSeq/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="peakseq11-" class="anchor" href="#peakseq11-"><span class="octicon octicon-link"></span></a>PeakSeq1.1 </h1>
+
+<p>PeakSeq is a program for calling peaks in ChIP-Seq experiments. Requires a set of mapped reads from ChIP enriched and Input DNA (or some other control) based
+sequencing experiment.</p>
+
+<p>Refer to the paper for explanation of the method
+PeakSeq Systematic Scoring of ChIP-Seq Experiments Relative to Controls
+Rozowsky J, Euskirchen G, Auerbach R, Zhang Z, Gibson T, Bjornson R, Carriero N, Snyder M, Gerstein M
+Nature Biotechnology 27, 66 - 75 (2009).</p>
+
+<p>This new version is re-coded by Arif Harmanci under supervision of Joel Rozowsky. For more info see <a href="http://info.gersteinlab.org/PeakSeq">http://info.gersteinlab.org/PeakSeq</a></p>
+
+<h1>
+<a name="installation-" class="anchor" href="#installation-"><span class="octicon octicon-link"></span></a>Installation </h1>
+
+<p>Extract the folder, then do make. PeakSeq is built into bin directory.</p>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>The mapped read files that contain the ChIP-Seq reads and the control reads must be preprocessed into a binary file format that PeakSeq can access fast. This is performed by running PeakSeq with -preprocess option. Currently PeakSeq can preprocess three mapped read file formats SAM, tagAlign, and ELAND. </p>
+
+<p>For example, following command reads the mapped reads in the file named pol2_chip_seq.eland and dumps the processed reads into the folder Pol2_ChIP
+.PeakSeq -preprocess ELAND chr_id_list.txt pol2_chip_seq.eland Pol2_ChIP
+chr_id_list.txt is the list of chromosomes to be processed. These must match chromosome ids in the mapped read file. </p>
+
+<p>BAM files can be processed first by samtools package then be piped into PeakSeq
+samtools view pol2_chip_seq.bam  .PeakSeq -preprocess SAM chr_id_list.txt stdin Pol2_ChIP
+where the input file name is specified as stdin to indicate that the mapped reads are piped into PeakSeq.</p>
+
+<p>After preprocessing, the peaks can be called using -peak_select option. PeakSeq requires a configuration file for calling the peaks where several parameters are specified in each line in the '[id] [value]' format. An example configuration file is as follows</p>
+
+<p>config.dat
+Experiment id is used as a prefix to the output file name.
+Experiment_id pol2_peaks</p>
+
+<p>Chromosome ID list file, is used to generate data file paths.
+chromosome_list_file chr_id_list.txt</p>
+
+<p>Enrichment fragment length For tag extension, this is the value of average fragment length.
+Enrichment_fragment_length 200</p>
+
+<p>Target FDR in the simulations.
+target_FDR 0.05</p>
+
+<p>Number of simulations performed while estimating the putative peaks.
+N_Simulations 10</p>
+
+<p>Minimum distance between consecutive peaks
+Minimum_interpeak_distance 200</p>
+
+<p>Mappability file that includes the uniquely mappable number of nucleotides per window for each chromosome.
+Mappability_map_file Mapability_HG.txt</p>
+
+<p>The directory that contains the preprocessed ChIP-Seq reads, can specify multiple directories to pool reads from multiple source (e.g. replicates)
+ChIP_Seq_reads_data_dirs Pol2_ChIP</p>
+
+<p>The directory that contains the preprocessed Input (control) experiment reads. (Multiple directories allowed)
+Input_reads_data_dirs Pol2_Input</p>
+
+<p>Seed for pseudo-random number generator. This is necessary for simulated background option (specified below).
+Simulation_seed 1234567</p>
+
+<p>Q-value threshold applied on the final set of peaks.
+max_Qvalue 0.05</p>
+
+<p>There are currently two models for simulating the background for threshold selection
+Simulated background is the simulation based method that is explained in the PeakSeq paper.
+Poisson background uses a simple Poisson background with mean estimated from the read statistics. This option is still experimental but it is much faster than the simulated background option.
+Background_model Poisson
+Background_model Simulated</p>
+
+<p>config.dat is passed to PeakSeq as a parameter with -peak_select option
+PeakSeq -peak_select config.dat.</p>
+
+<p>PeakSeq will complain if it cannot find a mandatory entry in the configuration file.</p>
+
+<h1>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>Output</h1>
+
+<p>PeakSeq dumps a narrowPeak file (httpencodewiki.ucsc.eduEncodeDCCindex.phpFile_Formats#narrowPeak_Narrow_.28or_Point-Source.29_Peaks_Format) and a txt file with peaks. The peak region, p-value, q-value, and enrichment statistics are reported in the output file.</p>
+
+<h1>
+<a name="feedbackcommentsquestions" class="anchor" href="#feedbackcommentsquestions"><span class="octicon octicon-link"></span></a>FeedbackCommentsQuestions</h1>
+
+<p>Are always welcome. Please address them to Arif Harmanci (<a href="mailto:arif.harmanci@yale.edu">arif.harmanci@yale.edu</a>). </p>
+
+<p>Arif Harmanci, Joel Rozowsky. Gerstein Lab, Yale University. June, 2011.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Peakseq maintained by <a href="https://github.com/gersteinlab">gersteinlab</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
