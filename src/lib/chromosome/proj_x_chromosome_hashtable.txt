@@ -1,9 +1,0 @@
-December 31st, 2010:
-The chromosome hastable aims to serve as an extendable searching interface, which should lead to an efficient command line tool in the genomics toolbox. The desired functionalities are:
-1. Ability to seach for any number of mismatches.
-2. Ability to search for any length fragments (a max length can be specified here.)
-
-First functionality requires following: 
-1. Generate all possible inexact matches
-2. Search for them in the hash table, combine all the list of nodes, sort them
-3. Search for the correct consecutive nodes.
